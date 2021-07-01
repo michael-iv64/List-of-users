@@ -1,13 +1,33 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+
+import thunk from 'redux-thunk';
+import { Provider } from 'react-redux';
+import { compose, createStore, applyMiddleware } from 'redux';
+// import createSagaMiddleware from 'redux-saga'
+
+import { rootReducer } from './redux/reducers/rootReducer';
+import MainRouter from './router/MainRouter';
+
 import reportWebVitals from './reportWebVitals';
+import { forrbidenMiddleware } from './redux/middleware/middleware';
+
+// const saga = createSagaMiddleware()
+
+const store = createStore(rootReducer, compose(
+  applyMiddleware(
+      thunk, forrbidenMiddleware
+  ),
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+))
+
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Provider store={store}>
+    <React.StrictMode>
+      <MainRouter />
+  </React.StrictMode>
+  </Provider>,
   document.getElementById('root')
 );
 
